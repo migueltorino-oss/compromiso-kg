@@ -43,7 +43,10 @@
   /* ---- ficha del dia ---- */
   .dia-head{background:var(--blanco); border:1px solid var(--borde); border-radius:12px; padding:14px; margin:14px 0}
   .dia-head .nom{font-weight:700; font-size:17px}
-  .dia-head .fec{color:var(--gris); font-size:14px; margin-top:3px; text-transform:capitalize}
+  /* la fecha se arma en minúsculas ("martes 22 de septiembre"): capitalize pondría en mayúscula
+     también el "De", así que solo se sube la primera letra */
+  .dia-head .fec{color:var(--gris); font-size:14px; margin-top:3px}
+  .dia-head .fec::first-letter{text-transform:uppercase}
   .dia-head .ya{display:none; margin-top:10px; background:#e6f2e7; color:var(--verde); border-radius:10px;
     padding:9px 11px; font-size:13.5px; font-weight:600}
   .dia-head .ya.on{display:block}
@@ -165,7 +168,7 @@
 
     <div class="historial" id="historial"></div>
 
-    <p class="pie">Generado el 22/9/2026, 04:56:14</p>
+    <p class="pie">Generado el 22/9/2026, 06:54:20</p>
   </div>
 
   <div class="enviar" id="barraEnviar" style="display:none">
@@ -183,7 +186,7 @@
 // lleva la fecha del compromiso — el backend exige ese campo y así la planilla queda con
 // una clave legible por día.
 const DATA_CLARO = null;
-const CIFRADO = {"salt":"+RGDzeYopwYK3AGvNnunBA==","iv":"wbpIGQ1CTlAhC4eW","ct":"rrhTMBEBtRj2d04iWCAlalbUeJVTiczfla4yTy9c32yK4FNBTnxGV+NMokiRncCsUXTaOpHHOUL6DSPDm6UpmYr3crKVPPdKpq0l0mA/lUvDr7RL9O2ohH9a0udxIBguTLVvGNfZQOkczpTgstJ9TKrjHbngVKY4GJSfVpFtbDJ2+F5sYcQGlj6COA0avvp8WXNG5PoXWVgvQK3GFpCdQUo1XCkFgmoG+ZXajPcbrDgRfnu954G2fEhsboNEaOdpZeM6LKIvICRZAE/0OjJo/o1IZLHmb2dG/ARBZozBhRNDjJHnerjexQPiXp00BWD7Vreby2woK3ja93V2yNuPBlRZoJVfcvyE30mQ3eI5AUbYPL9luthdFtZlPmvUR5EsVdPDrSNAQpnwuldsBJc5WLBaMXFqhiYG4d8+AbdtdVLHmp51iKA8p+cK7BHukgHsSPNRxXkOccUAsA6KJg/7p0Q3Zc7KVqJvdnGgT+jctygaQW3vuMt5fbacMeurXjh+3iGiLa1ibIY35DvSesgYLHsaDcDSUcrjhZyO9g9YQgFrLnl+5tPwk8PgChGb4gA1kAl5Cn6ny6A+Q9aT2nI8EiHZC55Gr3g0aPdavlYQ/LSda2H2XP5gK3ka0zLNIXWZRbVriAJ10ctAFzpFupILs9iqPvQ5NLp+AyUwHlVk7UZ8AGXdTOUOs+Vt8+E+7ZGPb2KgI1PICca8tcd4tFMniZPNGwt8PmcLkUGU3IQK78pzmUz45Yn/aBZ7C1ZqpmSadjUKmG1UTuc+OSZUirJvAa3hJ8qa31LISvKVmMfUz4FblEY4iLrH/YjR0X1VrzQxYRBUEuDpBlDUC8vQ5UCaIhRjTxHKpDEdtQu5ZQ0bepPEV6NjJ+ss7G6cq41uw7VMZFdXNmVNLF7Wxy4xGm5gbWEI9+j9LR7WsmLq8D5TsfRKmu9oh9xB+HsMs5argtfQGkO0zbZO3XYjZWjGCdF482J4","it":120000};
+const CIFRADO = {"salt":"m9L5DJk+VvTYJsMrKAmP+g==","iv":"W5W3LxKSDBT+Wjjw","ct":"zry5aggYwClDFxilzkEL1rtWubnPcUYUNwaaEj/u+wwRJBq4/S3Xk+sERuKzufq2uK7//Jj0SkEnkwNL4KiamUG313W4QaRkiqGu0gUl54oZjuT9baclPx6+nDMdvPn1DegOfXht7ragpDtOyF3TfsNCz/0K2qJ5DmUZrzxcGM5Rx7TZO5ZxeRIzv0jbjzAAv9X4JurxvQZfas4bdAUryPtv83ywARRa8eRR6M/iFJRCQhjXwQT7xufBbHY1U7X1s5YfmO9d2jRuofqiffCfkcSd0RZ+vyjOFhZMwSN2YsY+ASVNBbcP1KBdfY1x1anls30hfp0xFYNOCQK2vAcdtEXRXASGo+dSqpZ/PqwhVZo/MwU0MUG2KPZy3IUECUrz6T3O2H7BCoRBxtwQVOlb2Kf7MDgrXeTo9an8FNzY5UaC76HgogqLIMkif5iqSpB0F5yJfUiXLRcVSl1Fi4UU8h4TEN5DMGqlzM+3p2DAMwg2NTpEAsFz2ovRYlgythoKosF9ewdqm5XjUZOC+DmW5tUOjeRuMq/ch9a9hJHc1Pj7TrD1QnohC3w162xjfmLAzAPyyk1+rpvp11B9cKKYljBb5TpGeM9Bmh0TlYRiD+icRgpJaif26UKbhWhRx5cG8P19zMFN//RAQyALUCgkgclcgTFP96j7+p7HAD/wFce/zkWUz/wJFZWFlpaoesPnmtZbYAxZ9FR1o+KBj5A1TaPJ4LG/umDr05hy5PzbG2FgwKnHsfcq1jK5YQ7TuNL5EXvINvI8B7KQ4WmIK7y2dl9szcvEOoFTGshXaz1RhT4Z2icGx83mQUaS/O5py3HSy8F83M/Xphz1tLsfF2tKqFBRZj7GjmdYv1Vx/3YHOBY4+Ongvizo2zh8WZFdwgXwVrHlYIjDmd9MVyhnfGl2L4JLaTLWsClfPEacLZMOeXPkkWJiBL1uT5oXcreJtHyjiXwO6bWzjW9fPLCUzAslNuCR","it":120000};
 const CFG = {"endpoint":"https://script.google.com/macros/s/AKfycby1WmRRSda927G_ncDzfagLQQF4XQCe7bGLcBnAdxZR8s1R4QZ4FUs1Nz19rvyg124m/exec","titulo":"Compromiso del día","grupos":[{"id":"gp","etiqueta":"Platino + Gold","ayuda":"Los artículos Gold y Platinum del objetivo Pepsico.","max":1000},{"id":"sb","etiqueta":"Silver & Bronze","ayuda":"El resto del portafolio Pepsico.","max":1000}],"formulario":"compromisos","hoja":"Respuestas","archivo":"Compromisos de venta en KG","conClave":true};
 const EP = CFG.endpoint || '';
 const GRUPOS = CFG.grupos || [];
@@ -380,8 +383,10 @@ function armarPayload(){
     fecha: new Date().toISOString(),
     vendedorCod: vendActual.c,
     vendedor: vendActual.n,
-    // el backend exige clienteCod: acá no hay cliente, así que la clave del día ocupa ese lugar
-    clienteCod: fecha,
+    // El backend exige clienteCod: acá no hay cliente, así que ese lugar lleva la clave del día.
+    // Va con prefijo ("COMP 2026-09-22") a propósito: una fecha pelada la convierte Sheets en
+    // un Date y volvería como timestamp en el export.
+    clienteCod: 'COMP ' + fecha,
     cliente: 'Compromiso del día',
     direccion: '',
     obs: $('obs').value.trim(),
