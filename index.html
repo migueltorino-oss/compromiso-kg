@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Compromiso del día — Pehuenia</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<style>
+  :root{
+    --rojo:#b32330; --rojo-osc:#8f1c26; --crema:#faf7f2; --tinta:#2b2320;
+    --gris:#8a817c; --borde:#e5ddd5; --verde:#2e7d32; --ambar:#b26a00; --blanco:#fff;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0; padding:0; background:var(--crema); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; font-size:16px}
+  .wrap{max-width:560px; margin:0 auto; padding:0 14px 110px}
+  header{background:var(--rojo); color:#fff; padding:14px 16px; position:sticky; top:0; z-index:20;
+    box-shadow:0 2px 8px rgba(0,0,0,.18)}
+  header .hwrap{max-width:560px; margin:0 auto; display:flex; align-items:center; gap:10px}
+  header h1{font-size:17px; margin:0; font-weight:700; flex:1; line-height:1.2}
+  header .sub{font-size:12px; opacity:.85; font-weight:400; display:block}
+  header button{background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.35); color:#fff;
+    border-radius:8px; padding:7px 12px; font-size:13px; font-weight:600}
+  button{font-family:inherit; cursor:pointer}
+
+  #banner{display:none; background:#fff4e0; border:1px solid #e8c98a; color:#7a5200; border-radius:10px;
+    padding:10px 12px; margin:12px 0 0; font-size:14px; flex-direction:column; gap:8px}
+  #banner.on{display:flex}
+  #banner .btns{display:flex; gap:8px}
+  #banner button{background:var(--ambar); color:#fff; border:none; border-radius:8px; padding:8px 12px;
+    font-size:13px; font-weight:700; white-space:nowrap}
+  #banner button.sec{background:none; color:#7a5200; border:1px solid #e8c98a}
+
+  .equipo-tit{font-size:13px; font-weight:700; color:var(--gris); letter-spacing:.06em; margin:22px 4px 8px;
+    text-transform:uppercase}
+  .vend-btn{display:flex; width:100%; align-items:center; gap:12px; background:var(--blanco);
+    border:1px solid var(--borde); border-radius:12px; padding:14px; margin-bottom:8px; font-size:16px;
+    font-weight:600; color:var(--tinta); text-align:left}
+  .vend-btn small{margin-left:auto; color:var(--gris); font-weight:400; font-size:13px; white-space:nowrap}
+  .vend-btn .num{background:var(--crema); border:1px solid var(--borde); border-radius:8px; min-width:38px;
+    text-align:center; padding:6px 0; font-size:14px; color:var(--rojo); font-weight:700}
+
+  /* ---- ficha del dia ---- */
+  .dia-head{background:var(--blanco); border:1px solid var(--borde); border-radius:12px; padding:14px; margin:14px 0}
+  .dia-head .nom{font-weight:700; font-size:17px}
+  .dia-head .fec{color:var(--gris); font-size:14px; margin-top:3px; text-transform:capitalize}
+  .dia-head .ya{display:none; margin-top:10px; background:#e6f2e7; color:var(--verde); border-radius:10px;
+    padding:9px 11px; font-size:13.5px; font-weight:600}
+  .dia-head .ya.on{display:block}
+
+  .seccion{font-size:14px; font-weight:700; margin:18px 4px 8px; color:var(--tinta)}
+  .seccion small{display:block; font-weight:400; color:var(--gris); font-size:12.5px; margin-top:2px}
+
+  .grupo{background:var(--blanco); border:1px solid var(--borde); border-radius:12px; padding:14px; margin-bottom:10px}
+  .grupo.on{border-color:var(--rojo)}
+  .grupo .tit{font-size:16px; font-weight:700; line-height:1.2}
+  .grupo .ayuda{font-size:12.5px; color:var(--gris); margin-top:3px}
+  .grupo .campo{display:flex; align-items:center; margin-top:11px; border:1px solid var(--borde);
+    border-radius:10px; background:var(--crema); padding:0 12px}
+  .grupo .campo:focus-within{border-color:var(--rojo)}
+  .grupo .campo input{border:none; background:none; outline:none; padding:13px 6px; font-size:20px;
+    width:100%; color:var(--tinta); font-weight:600; text-align:right}
+  .grupo .campo .uni{color:var(--gris); font-size:15px; font-weight:600; flex:none; padding-left:6px}
+  .grupo .ult{font-size:12.5px; color:var(--gris); margin-top:7px}
+  .grupo .ult b{color:var(--tinta)}
+
+  .total{display:flex; align-items:baseline; justify-content:space-between; background:var(--blanco);
+    border:1px solid var(--borde); border-radius:12px; padding:14px; margin-bottom:10px}
+  .total .lbl{font-size:14px; font-weight:700; color:var(--gris); text-transform:uppercase; letter-spacing:.05em}
+  .total .val{font-size:26px; font-weight:700}
+  .total .val small{font-size:14px; color:var(--gris); font-weight:600}
+
+  #obs{width:100%; border:1px solid var(--borde); border-radius:12px; padding:12px; font-size:15px; min-height:64px;
+    background:var(--blanco); outline:none; resize:vertical; font-family:inherit}
+  #obs:focus{border-color:var(--rojo)}
+
+  .historial{margin-top:20px}
+  .historial .fila{display:flex; align-items:center; gap:10px; background:var(--blanco); border:1px solid var(--borde);
+    border-radius:10px; padding:10px 12px; margin-bottom:6px; font-size:14px}
+  .historial .fila .f{color:var(--gris); flex:none; min-width:58px}
+  .historial .fila .k{margin-left:auto; font-weight:700}
+  .historial .fila .d{color:var(--gris); font-size:12.5px}
+
+  .enviar{position:fixed; bottom:0; left:0; right:0; background:linear-gradient(transparent, var(--crema) 30%);
+    padding:18px 14px 16px; z-index:15}
+  .enviar .ewrap{max-width:560px; margin:0 auto}
+  .enviar button{width:100%; background:var(--rojo); color:#fff; border:none; border-radius:14px; padding:17px;
+    font-size:17px; font-weight:700; box-shadow:0 4px 14px rgba(179,35,48,.35)}
+  .enviar button:disabled{opacity:.6}
+
+  #toast{position:fixed; bottom:96px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--tinta);
+    color:#fff; border-radius:12px; padding:12px 18px; font-size:14.5px; opacity:0; pointer-events:none;
+    transition:all .25s; z-index:50; max-width:90vw; text-align:center}
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
+  #toast.ok{background:var(--verde)}
+  #toast.err{background:var(--rojo-osc)}
+
+  .clave-input{width:100%; border:1px solid var(--borde); border-radius:12px; padding:14px; font-size:16px;
+    background:var(--blanco); outline:none; margin-bottom:10px}
+  .clave-input:focus{border-color:var(--rojo)}
+  .btn-primario{width:100%; background:var(--rojo); color:#fff; border:none; border-radius:12px; padding:15px;
+    font-size:16px; font-weight:700}
+  .vacio{text-align:center; color:var(--gris); padding:40px 10px; font-size:14px}
+  .pie{text-align:center; color:#c0b6ae; font-size:11.5px; margin-top:26px}
+  .view{display:none}
+  .view.on{display:block}
+</style>
+</head>
+<body>
+<header>
+  <div class="hwrap">
+    <h1 id="hTitulo">Compromiso del día
+      <span class="sub" id="hSub">Primeros Productos Pehuenia</span>
+    </h1>
+    <button id="btnCambiar" style="display:none">Cambiar</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="banner">
+    <span id="bannerTxt"></span>
+    <div class="btns">
+      <button id="btnReintentar">Reintentar envío</button>
+      <button id="btnDescartar" class="sec" style="display:none">Descartar fallidos</button>
+    </div>
+  </div>
+
+  <!-- Vista 0: clave del equipo -->
+  <div id="view-clave" class="view">
+    <p style="margin:22px 4px 14px; font-size:15px; color:var(--gris)">
+      Escribí la clave del equipo para entrar. Se pide una sola vez en cada teléfono.
+    </p>
+    <input id="inpClave" class="clave-input" type="password" inputmode="text" autocomplete="off"
+           placeholder="Clave del equipo">
+    <button id="btnClave" class="btn-primario">Entrar</button>
+    <p id="claveErr" style="display:none; color:var(--rojo); font-size:14px; margin:12px 4px 0"></p>
+  </div>
+
+  <!-- Vista 1: elegir vendedora -->
+  <div id="view-vend" class="view">
+    <p style="margin:18px 4px 0; font-size:15px; color:var(--gris)">Elegí tu nombre para cargar tu compromiso.</p>
+    <div id="listaVend"></div>
+  </div>
+
+  <!-- Vista 2: compromiso del dia -->
+  <div id="view-form" class="view">
+    <div class="dia-head">
+      <div class="nom" id="fVend"></div>
+      <div class="fec" id="fFecha"></div>
+      <div class="ya" id="fYa"></div>
+    </div>
+
+    <div class="seccion">¿Cuántos kilos vas a traer hoy?
+      <small>Cargá el compromiso por grupo del objetivo. Si un grupo va en cero, escribí 0.</small>
+    </div>
+    <div id="listaGrupos"></div>
+
+    <div class="total">
+      <span class="lbl">Total del día</span>
+      <span class="val" id="fTotal">0 <small>kg</small></span>
+    </div>
+
+    <div class="seccion">Observaciones <small>Opcional: algo que explique el número de hoy.</small></div>
+    <textarea id="obs" placeholder="Ej.: dos clientes grandes cierran por vacaciones"></textarea>
+
+    <div class="historial" id="historial"></div>
+
+    <p class="pie">Generado el 22/9/2026, 04:56:14</p>
+  </div>
+
+  <div class="enviar" id="barraEnviar" style="display:none">
+    <div class="ewrap"><button id="btnEnviar">Enviar compromiso</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// Formulario de COMPROMISO DIARIO en kilos. Una carga por vendedora y por día, con los
+// kilos abiertos en los dos grupos del objetivo Pepsico. Mismo contrato de backend que los
+// relevamientos (Apps Script genérico): el payload define las columnas de la planilla.
+// A diferencia de los relevamientos NO va por cliente, así que el "cliente" del payload
+// lleva la fecha del compromiso — el backend exige ese campo y así la planilla queda con
+// una clave legible por día.
+const DATA_CLARO = null;
+const CIFRADO = {"salt":"+RGDzeYopwYK3AGvNnunBA==","iv":"wbpIGQ1CTlAhC4eW","ct":"rrhTMBEBtRj2d04iWCAlalbUeJVTiczfla4yTy9c32yK4FNBTnxGV+NMokiRncCsUXTaOpHHOUL6DSPDm6UpmYr3crKVPPdKpq0l0mA/lUvDr7RL9O2ohH9a0udxIBguTLVvGNfZQOkczpTgstJ9TKrjHbngVKY4GJSfVpFtbDJ2+F5sYcQGlj6COA0avvp8WXNG5PoXWVgvQK3GFpCdQUo1XCkFgmoG+ZXajPcbrDgRfnu954G2fEhsboNEaOdpZeM6LKIvICRZAE/0OjJo/o1IZLHmb2dG/ARBZozBhRNDjJHnerjexQPiXp00BWD7Vreby2woK3ja93V2yNuPBlRZoJVfcvyE30mQ3eI5AUbYPL9luthdFtZlPmvUR5EsVdPDrSNAQpnwuldsBJc5WLBaMXFqhiYG4d8+AbdtdVLHmp51iKA8p+cK7BHukgHsSPNRxXkOccUAsA6KJg/7p0Q3Zc7KVqJvdnGgT+jctygaQW3vuMt5fbacMeurXjh+3iGiLa1ibIY35DvSesgYLHsaDcDSUcrjhZyO9g9YQgFrLnl+5tPwk8PgChGb4gA1kAl5Cn6ny6A+Q9aT2nI8EiHZC55Gr3g0aPdavlYQ/LSda2H2XP5gK3ka0zLNIXWZRbVriAJ10ctAFzpFupILs9iqPvQ5NLp+AyUwHlVk7UZ8AGXdTOUOs+Vt8+E+7ZGPb2KgI1PICca8tcd4tFMniZPNGwt8PmcLkUGU3IQK78pzmUz45Yn/aBZ7C1ZqpmSadjUKmG1UTuc+OSZUirJvAa3hJ8qa31LISvKVmMfUz4FblEY4iLrH/YjR0X1VrzQxYRBUEuDpBlDUC8vQ5UCaIhRjTxHKpDEdtQu5ZQ0bepPEV6NjJ+ss7G6cq41uw7VMZFdXNmVNLF7Wxy4xGm5gbWEI9+j9LR7WsmLq8D5TsfRKmu9oh9xB+HsMs5argtfQGkO0zbZO3XYjZWjGCdF482J4","it":120000};
+const CFG = {"endpoint":"https://script.google.com/macros/s/AKfycby1WmRRSda927G_ncDzfagLQQF4XQCe7bGLcBnAdxZR8s1R4QZ4FUs1Nz19rvyg124m/exec","titulo":"Compromiso del día","grupos":[{"id":"gp","etiqueta":"Platino + Gold","ayuda":"Los artículos Gold y Platinum del objetivo Pepsico.","max":1000},{"id":"sb","etiqueta":"Silver & Bronze","ayuda":"El resto del portafolio Pepsico.","max":1000}],"formulario":"compromisos","hoja":"Respuestas","archivo":"Compromisos de venta en KG","conClave":true};
+const EP = CFG.endpoint || '';
+const GRUPOS = CFG.grupos || [];
+
+const LS = {
+  clave: 'ck_clave_v1', vend: 'ck_vendedor_v1', queue: 'ck_cola_v1',
+  fallidos: 'ck_fallidos_v1', hechos: 'ck_hechos_v1', draft: 'ck_borrador_v1',
+};
+const TIMEOUT = 20000;
+const MAX_INTENTOS = 5;
+
+let DATA = DATA_CLARO;              // { vendedores: [{c, n, eq}] }
+let vendActual = null;
+let queue = leerLS(LS.queue, []);
+let fallidos = leerLS(LS.fallidos, []);
+let hechos = leerLS(LS.hechos, {}); // 'AAAA-MM-DD' -> [gp, sb, enviadoISO]
+let enviando = false, flusheando = false;
+
+// ---------- utilidades ----------
+function leerLS(k, def){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; }catch(e){ return def; } }
+function grabarLS(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+function $(id){ return document.getElementById(id); }
+function toast(msg, tipo, ms){
+  const t = $('toast');
+  t.textContent = msg; t.className = 'on ' + (tipo || '');
+  clearTimeout(t._h); t._h = setTimeout(() => { t.className = ''; }, ms || 3000);
+}
+function nuevoId(){
+  return (crypto.randomUUID ? crypto.randomUUID()
+    : Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+}
+// fecha local (no UTC: a la noche toISOString ya está en el día siguiente)
+function hoyISO(d){
+  const x = d || new Date();
+  return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+}
+const DIAS_SEM = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+function fechaLarga(iso){
+  const [a, m, d] = iso.split('-').map(Number);
+  const x = new Date(a, m - 1, d);
+  return DIAS_SEM[x.getDay()] + ' ' + d + ' de ' + MESES[m - 1];
+}
+function ddmm(iso){ const p = iso.split('-'); return p[2] + '/' + p[1]; }
+
+// Kilos escritos a mano en un celular: "12,5" · "1.250" · "1.250,5" · "12.5".
+// La coma siempre es decimal; el punto es decimal SOLO si no parece separador de miles.
+function kgNum(s){
+  if (s === '' || s == null) return '';
+  let t = String(s).trim().replace(/\s|kg/gi, '');
+  if (!t) return '';
+  if (t.includes(',')) t = t.replace(/\./g, '').replace(',', '.');
+  else if ((t.match(/\./g) || []).length === 1 && /\.\d{3}$/.test(t)) t = t.replace('.', '');
+  const n = Number(t);
+  return Number.isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : '';
+}
+const fmtKg = n => Number(n).toLocaleString('es-AR', { maximumFractionDigits: 1 });
+
+// ---------- descifrado del padrón ----------
+async function descifrar(clave){
+  const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(clave), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: b64(CIFRADO.salt), iterations: CIFRADO.it, hash: 'SHA-256' },
+    base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  const plano = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(CIFRADO.iv) }, key, b64(CIFRADO.ct));
+  return JSON.parse(new TextDecoder().decode(plano));
+}
+
+// ---------- vistas ----------
+function renderVista(v){
+  ['clave', 'vend', 'form'].forEach(x => $('view-' + x).classList.toggle('on', x === v));
+  $('btnCambiar').style.display = (v === 'form') ? '' : 'none';
+  $('barraEnviar').style.display = (v === 'form') ? '' : 'none';
+  window.scrollTo(0, 0);
+}
+
+function renderVendedores(){
+  const cont = $('listaVend');
+  const porEq = {};
+  for (const v of DATA.vendedores) (porEq[v.eq] = porEq[v.eq] || []).push(v);
+  let html = '';
+  for (const eq of Object.keys(porEq)){
+    html += '<div class="equipo-tit">' + eq + '</div>';
+    for (const v of porEq[eq]){
+      html += '<button class="vend-btn" data-c="' + v.c + '"><span class="num">' + v.c + '</span>' + v.n + '</button>';
+    }
+  }
+  cont.innerHTML = html;
+  cont.querySelectorAll('.vend-btn').forEach(b => {
+    b.onclick = () => {
+      vendActual = DATA.vendedores.find(x => String(x.c) === b.dataset.c);
+      grabarLS(LS.vend, vendActual.c);
+      abrirForm();
+    };
+  });
+}
+
+function abrirForm(){
+  const hoy = hoyISO();
+  $('fVend').textContent = vendActual.n;
+  $('fFecha').textContent = fechaLarga(hoy);
+  $('hSub').textContent = vendActual.n;
+
+  // grupos del objetivo
+  $('listaGrupos').innerHTML = GRUPOS.map(g =>
+    '<div class="grupo" data-id="' + g.id + '">' +
+      '<div class="tit">' + g.etiqueta + '</div>' +
+      (g.ayuda ? '<div class="ayuda">' + g.ayuda + '</div>' : '') +
+      '<div class="campo"><input type="text" inputmode="decimal" placeholder="0" ' +
+        'aria-label="Kilos de ' + g.etiqueta + '"><span class="uni">kg</span></div>' +
+      '<div class="ult"></div>' +
+    '</div>').join('');
+
+  $('listaGrupos').querySelectorAll('.grupo').forEach(d => {
+    const inp = d.querySelector('input');
+    inp.addEventListener('input', () => { pintarTotal(); guardarDraft(); });
+    inp.addEventListener('blur', () => {
+      const n = kgNum(inp.value);
+      if (n !== '') inp.value = fmtKg(n);
+      d.classList.toggle('on', n !== '' && n > 0);
+      pintarTotal();
+    });
+  });
+
+  // lo cargado los días anteriores, como referencia
+  const previos = Object.keys(hechos).filter(f => f < hoy).sort().reverse();
+  const ultimo = previos.length ? hechos[previos[0]] : null;
+  if (ultimo){
+    $('listaGrupos').querySelectorAll('.grupo').forEach((d, i) => {
+      d.querySelector('.ult').innerHTML = 'Tu último compromiso (' + ddmm(previos[0]) + '): <b>' + fmtKg(ultimo[i] || 0) + ' kg</b>';
+    });
+  }
+
+  // ¿ya cargó hoy?
+  const yaHoy = hechos[hoy];
+  $('fYa').classList.toggle('on', !!yaHoy);
+  if (yaHoy){
+    $('fYa').textContent = '✓ Ya cargaste el compromiso de hoy: ' + fmtKg((yaHoy[0] || 0) + (yaHoy[1] || 0)) +
+      ' kg. Si lo querés corregir, escribilo de nuevo y volvé a enviar.';
+  }
+
+  // borrador (lo tipeado sobrevive a que el celular mate la pestaña) o lo ya cargado hoy
+  const dr = leerLS(LS.draft, null);
+  const usar = (dr && dr.v === vendActual.c && dr.f === hoy) ? dr.g : (yaHoy ? yaHoy : null);
+  if (usar){
+    $('listaGrupos').querySelectorAll('.grupo').forEach((d, i) => {
+      if (usar[i] === '' || usar[i] == null) return;
+      d.querySelector('input').value = fmtKg(usar[i]);
+      d.classList.toggle('on', Number(usar[i]) > 0);
+    });
+  }
+  $('obs').value = (dr && dr.v === vendActual.c && dr.f === hoy) ? (dr.o || '') : '';
+  $('obs').oninput = guardarDraft;
+
+  pintarTotal();
+  renderHistorial();
+  renderVista('form');
+}
+
+function valoresGrupos(){
+  return [...$('listaGrupos').querySelectorAll('.grupo')].map(d => kgNum(d.querySelector('input').value));
+}
+function pintarTotal(){
+  const t = valoresGrupos().reduce((a, b) => a + (b === '' ? 0 : b), 0);
+  $('fTotal').innerHTML = fmtKg(t) + ' <small>kg</small>';
+}
+function guardarDraft(){
+  grabarLS(LS.draft, { v: vendActual.c, f: hoyISO(), g: valoresGrupos(), o: $('obs').value });
+}
+function limpiarDraft(){ try{ localStorage.removeItem(LS.draft); }catch(e){} }
+
+function renderHistorial(){
+  const fechas = Object.keys(hechos).sort().reverse().slice(0, 8);
+  if (!fechas.length){ $('historial').innerHTML = ''; return; }
+  $('historial').innerHTML = '<div class="seccion">Lo que cargaste estos días</div>' +
+    fechas.map(f => {
+      const h = hechos[f];
+      const tot = (h[0] || 0) + (h[1] || 0);
+      return '<div class="fila"><span class="f">' + ddmm(f) + '</span>' +
+        '<span class="d">' + GRUPOS.map((g, i) => g.etiqueta + ' ' + fmtKg(h[i] || 0)).join(' · ') + '</span>' +
+        '<span class="k">' + fmtKg(tot) + ' kg</span></div>';
+    }).join('');
+}
+
+// ---------- envio ----------
+function armarPayload(){
+  const fecha = hoyISO();
+  const vals = valoresGrupos();
+  return {
+    _id: nuevoId(),
+    _k: vendActual.c + '|' + fecha,              // un compromiso por vendedora y día
+    clave: leerLS(LS.clave, '') || '',
+    fecha: new Date().toISOString(),
+    vendedorCod: vendActual.c,
+    vendedor: vendActual.n,
+    // el backend exige clienteCod: acá no hay cliente, así que la clave del día ocupa ese lugar
+    clienteCod: fecha,
+    cliente: 'Compromiso del día',
+    direccion: '',
+    obs: $('obs').value.trim(),
+    foto: null,
+    formulario: CFG.formulario,
+    hoja: CFG.hoja || 'Respuestas',
+    archivo: CFG.archivo,
+    campos: GRUPOS.map((g, i) => ({
+      id: g.id, etiqueta: 'Kg ' + g.etiqueta, tipo: 'numero',
+      valor: vals[i] === '' ? 0 : vals[i],
+    })),
+    _fechaComp: fecha,
+    _vals: vals,
+  };
+}
+
+function validar(p){
+  const vals = p._vals;
+  if (vals.every(v => v === '')){
+    toast('Escribí los kilos de cada grupo (0 si no vas a traer nada).', 'err', 4500);
+    return false;
+  }
+  for (let i = 0; i < GRUPOS.length; i++){
+    const max = GRUPOS[i].max;
+    if (max && vals[i] !== '' && vals[i] > max){
+      if (!confirm(GRUPOS[i].etiqueta + ': ' + fmtKg(vals[i]) + ' kg.\n¿Está bien ese número?')) return false;
+    }
+  }
+  const tot = vals.reduce((a, b) => a + (b === '' ? 0 : b), 0);
+  if (tot === 0 && !confirm('Estás cargando 0 kg para todo el día.\n¿Enviar igual?')) return false;
+  if (hechos[p._fechaComp] && !confirm('Ya cargaste el compromiso de hoy.\n¿Lo querés corregir con este número?')) return false;
+  return true;
+}
+
+async function postear(p){
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT);
+  try{
+    const limpio = Object.assign({}, p);
+    delete limpio._vals; delete limpio._fechaComp;
+    const r = await fetch(EP, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },   // evita el preflight CORS
+      body: JSON.stringify(limpio),
+      signal: ctrl.signal,
+    });
+    const txt = await r.text();
+    let j = null;
+    try{ j = JSON.parse(txt); }catch(e){}
+    if (!j){ const err = new Error('respuesta no reconocida del servidor'); err.tipo = 'transitorio'; throw err; }
+    if (!j.ok){
+      const err = new Error(j.error || 'el servidor rechazó el envío');
+      err.tipo = j.reintentar ? 'transitorio' : 'permanente'; throw err;
+    }
+    return j;
+  }catch(e){
+    if (!e.tipo) e.tipo = 'red';
+    throw e;
+  }finally{ clearTimeout(timer); }
+}
+
+// El backend tiene que saber guardar formularios genéricos en su propio archivo; si la
+// planilla quedó con una versión vieja, los datos caerían como filas vacías.
+let backendGenerico = null;
+async function backendListo(){
+  if (!EP) return true;
+  if (backendGenerico !== null) return backendGenerico;
+  try{
+    const j = await (await fetch(EP + '?action=ping')).json();
+    backendGenerico = !!(j && j.generico) && (!CFG.archivo || !!j.archivos);
+  }catch(e){ return null; }        // sin señal: se permite encolar
+  return backendGenerico;
+}
+
+function marcarHecho(p){
+  hechos[p._fechaComp] = [p.campos[0].valor, p.campos[1] ? p.campos[1].valor : 0, new Date().toISOString()];
+  grabarLS(LS.hechos, hechos);
+}
+function quitarDeCola(p){ queue = queue.filter(x => x._id !== p._id); grabarLS(LS.queue, queue); }
+function encolar(p){
+  queue = queue.filter(x => x._k !== p._k);   // la última corrección del día pisa a la anterior
+  queue.push(p);
+  grabarLS(LS.queue, queue);
+  pintarBanner();
+}
+function aFallidos(p, motivo){
+  fallidos = fallidos.filter(x => x._k !== p._k);
+  fallidos.push(Object.assign({}, p, { _error: String(motivo || '') }));
+  grabarLS(LS.fallidos, fallidos);
+  pintarBanner();
+}
+
+async function enviar(){
+  if (enviando) return;
+  if (!EP){ toast('El formulario todavía no está conectado a la planilla.', 'err'); return; }
+  if ((await backendListo()) === false){
+    toast('La planilla todavía no está actualizada para este formulario. Avisale a la oficina.', 'err', 9000);
+    return;
+  }
+  const p = armarPayload();
+  if (!validar(p)) return;
+
+  enviando = true;
+  const btn = $('btnEnviar');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  try{
+    await postear(p);
+    marcarHecho(p);
+    toast('✓ Compromiso enviado', 'ok');
+  }catch(e){
+    if (e.tipo === 'permanente'){
+      aFallidos(p, e.message);
+      toast('El servidor rechazó el envío: ' + e.message, 'err', 6000);
+    }else{
+      marcarHecho(p);   // queda cargado en el teléfono; la cola lo manda cuando vuelva la señal
+      encolar(p);
+      toast('Sin señal: quedó guardado y se envía solo cuando vuelva la conexión.', '', 4500);
+    }
+  }finally{
+    enviando = false;
+    btn.disabled = false; btn.textContent = 'Enviar compromiso';
+  }
+  limpiarDraft();
+  abrirForm();
+}
+
+// ---------- cola offline ----------
+async function flushear(){
+  if (flusheando || !EP || !queue.length) return;
+  if (navigator.onLine === false) return;
+  if ((await backendListo()) === false) return;
+  flusheando = true;
+  const btn = $('btnReintentar');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  let ok = 0, sinSenal = false;
+  try{
+    let i = 0;
+    while (i < queue.length){
+      const p = queue[i];
+      try{
+        await postear(p); marcarHecho(p); quitarDeCola(p); ok++;
+      }catch(e){
+        p._tries = (p._tries || 0) + 1;
+        if (e.tipo === 'permanente' || p._tries >= MAX_INTENTOS){
+          quitarDeCola(p); aFallidos(p, e.message);
+        }else if (e.tipo === 'red'){
+          grabarLS(LS.queue, queue); sinSenal = true; break;
+        }else{
+          grabarLS(LS.queue, queue); i++;
+        }
+      }
+    }
+  }finally{
+    flusheando = false;
+    btn.disabled = false; btn.textContent = 'Reintentar envío';
+    pintarBanner();
+    if (ok) toast('✓ Se enviaron ' + ok + ' compromiso(s) pendiente(s)', 'ok');
+    else if (sinSenal) toast('Todavía sin señal. Queda guardado.', '', 4000);
+    if ($('view-form').classList.contains('on')) { renderHistorial(); }
+  }
+}
+
+function pintarBanner(){
+  const b = $('banner');
+  const n = queue.length, f = fallidos.length;
+  if (!n && !f){ b.classList.remove('on'); return; }
+  b.classList.add('on');
+  const partes = [];
+  if (n) partes.push(n + ' compromiso(s) sin enviar');
+  if (f) partes.push(f + ' rechazado(s) por el servidor');
+  $('bannerTxt').textContent = partes.join(' · ') + '.';
+  $('btnReintentar').style.display = n ? '' : 'none';
+  $('btnDescartar').style.display = f ? '' : 'none';
+}
+
+// ---------- arranque ----------
+async function entrar(clave){
+  if (CIFRADO){
+    try{ DATA = await descifrar(clave); }
+    catch(e){ return false; }
+  }
+  grabarLS(LS.clave, clave);
+  renderVendedores();
+  const guardado = leerLS(LS.vend, null);
+  const v = guardado != null ? DATA.vendedores.find(x => String(x.c) === String(guardado)) : null;
+  if (v){ vendActual = v; abrirForm(); } else { renderVista('vend'); }
+  flushear();
+  return true;
+}
+
+$('btnClave').onclick = async () => {
+  const c = $('inpClave').value.trim();
+  if (!c) return;
+  $('btnClave').disabled = true; $('btnClave').textContent = 'Entrando…';
+  const ok = await entrar(c);
+  $('btnClave').disabled = false; $('btnClave').textContent = 'Entrar';
+  if (!ok){
+    $('claveErr').style.display = ''; $('claveErr').textContent = 'Esa clave no es la del equipo. Probá de nuevo.';
+    $('inpClave').value = '';
+  }
+};
+$('inpClave').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnClave').click(); });
+$('btnCambiar').onclick = () => { limpiarDraft(); renderVista('vend'); };
+$('btnEnviar').onclick = enviar;
+$('btnReintentar').onclick = flushear;
+$('btnDescartar').onclick = () => {
+  if (!confirm('Se van a borrar ' + fallidos.length + ' envío(s) rechazado(s).\n¿Seguro?')) return;
+  fallidos = []; grabarLS(LS.fallidos, fallidos); pintarBanner();
+};
+window.addEventListener('online', flushear);
+
+pintarBanner();
+(async () => {
+  const guardada = leerLS(LS.clave, '');
+  if (!CIFRADO){ await entrar(guardada || ''); return; }
+  if (guardada && await entrar(guardada)) return;
+  renderVista('clave');
+})();
+</script>
+</body>
+</html>
