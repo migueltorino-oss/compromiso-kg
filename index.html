@@ -163,12 +163,19 @@
       <span class="val" id="fTotal">0 <small>kg</small></span>
     </div>
 
+    <div id="bloqueMetas">
+      <div class="seccion">¿Cuántos clientes vas a traer hoy?
+        <small>CCC, Fully Digital y Tiendas Perfectas del día. Si alguno va en cero, escribí 0.</small>
+      </div>
+      <div id="listaMetas"></div>
+    </div>
+
     <div class="seccion">Observaciones <small>Opcional: algo que explique el número de hoy.</small></div>
     <textarea id="obs" placeholder="Ej.: dos clientes grandes cierran por vacaciones"></textarea>
 
     <div class="historial" id="historial"></div>
 
-    <p class="pie">Generado el 22/9/2026, 06:54:20</p>
+    <p class="pie">Generado el 25/9/2026, 01:58:50</p>
   </div>
 
   <div class="enviar" id="barraEnviar" style="display:none">
@@ -186,10 +193,15 @@
 // lleva la fecha del compromiso — el backend exige ese campo y así la planilla queda con
 // una clave legible por día.
 const DATA_CLARO = null;
-const CIFRADO = {"salt":"m9L5DJk+VvTYJsMrKAmP+g==","iv":"W5W3LxKSDBT+Wjjw","ct":"zry5aggYwClDFxilzkEL1rtWubnPcUYUNwaaEj/u+wwRJBq4/S3Xk+sERuKzufq2uK7//Jj0SkEnkwNL4KiamUG313W4QaRkiqGu0gUl54oZjuT9baclPx6+nDMdvPn1DegOfXht7ragpDtOyF3TfsNCz/0K2qJ5DmUZrzxcGM5Rx7TZO5ZxeRIzv0jbjzAAv9X4JurxvQZfas4bdAUryPtv83ywARRa8eRR6M/iFJRCQhjXwQT7xufBbHY1U7X1s5YfmO9d2jRuofqiffCfkcSd0RZ+vyjOFhZMwSN2YsY+ASVNBbcP1KBdfY1x1anls30hfp0xFYNOCQK2vAcdtEXRXASGo+dSqpZ/PqwhVZo/MwU0MUG2KPZy3IUECUrz6T3O2H7BCoRBxtwQVOlb2Kf7MDgrXeTo9an8FNzY5UaC76HgogqLIMkif5iqSpB0F5yJfUiXLRcVSl1Fi4UU8h4TEN5DMGqlzM+3p2DAMwg2NTpEAsFz2ovRYlgythoKosF9ewdqm5XjUZOC+DmW5tUOjeRuMq/ch9a9hJHc1Pj7TrD1QnohC3w162xjfmLAzAPyyk1+rpvp11B9cKKYljBb5TpGeM9Bmh0TlYRiD+icRgpJaif26UKbhWhRx5cG8P19zMFN//RAQyALUCgkgclcgTFP96j7+p7HAD/wFce/zkWUz/wJFZWFlpaoesPnmtZbYAxZ9FR1o+KBj5A1TaPJ4LG/umDr05hy5PzbG2FgwKnHsfcq1jK5YQ7TuNL5EXvINvI8B7KQ4WmIK7y2dl9szcvEOoFTGshXaz1RhT4Z2icGx83mQUaS/O5py3HSy8F83M/Xphz1tLsfF2tKqFBRZj7GjmdYv1Vx/3YHOBY4+Ongvizo2zh8WZFdwgXwVrHlYIjDmd9MVyhnfGl2L4JLaTLWsClfPEacLZMOeXPkkWJiBL1uT5oXcreJtHyjiXwO6bWzjW9fPLCUzAslNuCR","it":120000};
-const CFG = {"endpoint":"https://script.google.com/macros/s/AKfycby1WmRRSda927G_ncDzfagLQQF4XQCe7bGLcBnAdxZR8s1R4QZ4FUs1Nz19rvyg124m/exec","titulo":"Compromiso del día","grupos":[{"id":"gp","etiqueta":"Platino + Gold","ayuda":"Los artículos Gold y Platinum del objetivo Pepsico.","max":1000},{"id":"sb","etiqueta":"Silver & Bronze","ayuda":"El resto del portafolio Pepsico.","max":1000}],"formulario":"compromisos","hoja":"Respuestas","archivo":"Compromisos de venta en KG","conClave":true};
+const CIFRADO = {"salt":"NXYg5lJrpsd2R3zrWVwqxg==","iv":"tyOQvFgFmOUCeRqZ","ct":"CQLeoFZaTXwTDiyUAgITJ86GEbAeVPnkFRU8FSztkEAk0BXGjk6n09JIn8TBwm/74NQHsI2KjmooVdnRbQkLb9Vj9cqyNYJOuKcAkB6iUVC1Og8cikBqr8JO0HQSvj8NIAp0lztKApnXPSsW0Cr3+DhS8KYYQVgfJO9W10UEXiz1SMLtMKXFfBSVIzDil3KMD5945zbLOXXsrGFsqPYUS7cgzjQ/7WijJR6A5nqtBg01yvJhvLztyC2r463QF1mdUkcOw2XAxIAhXxj1opI4x+IyzSNpmkojg8tdmQJhMKfGOMzXYMDWWjv2yB1W72XVhUNOzd6Yt8eatPi0HGsZEqHHLER4v5nwKcDcM7NScaof6gGdZesxeHjkM5OqPuW17cpxQcteaPKR4YfYR977dnRydcBs9zisaJcwbpXOw6+847m0mf+mCwg4K69iEv1qe5VHuU9gsL6dvGhX0NvnrY7E2shgVnxIxyo8+Mop85ufgKha35Ip2j9ikanSxgsM79OUSewfR2ToQBrZTq9wXowGIyh8Di3n4tCRSxyuO02KLzav1zBcIeXGTspP2NJOBQ3yWEXDbfBi+SwtFzFb/RgYW677tCFFDmaHM8kK3jWs6Quo451XQ/2TNdTmSEmWhoD44uWXcrxNg/+qBqQGNyKN4fMSKBmZ9tVL+zM2MfUd1h8Rcp64tNSyfAFp5xvW8AqnKlZKEzjjOhHTMYtiOxPGui4R3GmD6dGV04F4XADipFYUgcFDaX5EKAYDll4OXNlBWyt206s/udzQpFr/lzWqu1zY6RuYNONcxKKFrsma/+KYGT9d28BCcit9JOhn1x1rUktvVFVk3GpC7s2q/oDOpmGJAoIwtVlk+T2caJMMFYVT41Acp2CXQvzW0udoJxyBDVIzNS5eqIZ2+PnyKdYdWvVIFnQEldU0xag5uyzy2g5ICdmRHxLehrwofVas3KSnUGIJUO8HmAe+fptUuA31","it":120000};
+const CFG = {"endpoint":"https://script.google.com/macros/s/AKfycby1WmRRSda927G_ncDzfagLQQF4XQCe7bGLcBnAdxZR8s1R4QZ4FUs1Nz19rvyg124m/exec","titulo":"Compromiso del día","grupos":[{"id":"gp","etiqueta":"Platino + Gold","ayuda":"Los artículos Gold y Platinum del objetivo Pepsico.","max":1000},{"id":"sb","etiqueta":"Silver & Bronze","ayuda":"El resto del portafolio Pepsico.","max":1000}],"metas":[{"id":"ccc","etiqueta":"Clientes CCC","columna":"CCC a traer","ayuda":"Clientes a los que hoy les vas a vender 3 o más unidades Pepsico.","uni":"clientes","max":80},{"id":"fd","etiqueta":"Clientes Fully Digital","columna":"FD a traer","ayuda":"Clientes que hoy te compran por la app Mi Negocio (70% o más del pedido).","uni":"clientes","max":80},{"id":"tp","etiqueta":"Tiendas Perfectas","columna":"TP a convertir","ayuda":"Tiendas que hoy vas a convertir en Tienda Perfecta.","uni":"tiendas","max":40}],"formulario":"compromisos","hoja":"Respuestas v2","archivo":"Compromisos de venta en KG","conClave":true};
 const EP = CFG.endpoint || '';
 const GRUPOS = CFG.grupos || [];
+// compromisos de clientes del día (CCC / Fully Digital / Tiendas Perfectas, agregados 2026-09-25).
+// En `hechos` van después de los kilos: [gp, sb, enviadoISO, ccc, fd, tp] — así lo cargado antes
+// del cambio (solo kilos) se sigue leyendo igual.
+const METAS = CFG.metas || [];
+const OFS_METAS = 3;
 
 const LS = {
   clave: 'ck_clave_v1', vend: 'ck_vendedor_v1', queue: 'ck_cola_v1',
@@ -202,7 +214,7 @@ let DATA = DATA_CLARO;              // { vendedores: [{c, n, eq}] }
 let vendActual = null;
 let queue = leerLS(LS.queue, []);
 let fallidos = leerLS(LS.fallidos, []);
-let hechos = leerLS(LS.hechos, {}); // 'AAAA-MM-DD' -> [gp, sb, enviadoISO]
+let hechos = leerLS(LS.hechos, {}); // 'AAAA-MM-DD' -> [gp, sb, enviadoISO, ccc, fd, tp]
 let enviando = false, flusheando = false;
 
 // ---------- utilidades ----------
@@ -244,6 +256,13 @@ function kgNum(s){
   return Number.isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : '';
 }
 const fmtKg = n => Number(n).toLocaleString('es-AR', { maximumFractionDigits: 1 });
+// cantidad de clientes / tiendas: entero >= 0 ('' si está vacío o no es un número)
+function entNum(s){
+  if (s === '' || s == null) return '';
+  const t = String(s).trim().replace(/\s|\./g, '');
+  if (!/^\d+$/.test(t)) return '';
+  return Number(t);
+}
 
 // ---------- descifrado del padrón ----------
 async function descifrar(clave){
@@ -312,6 +331,26 @@ function abrirForm(){
     });
   });
 
+  // compromisos de clientes (enteros: clientes / tiendas)
+  $('bloqueMetas').style.display = METAS.length ? '' : 'none';
+  $('listaMetas').innerHTML = METAS.map(m =>
+    '<div class="grupo" data-id="' + m.id + '">' +
+      '<div class="tit">' + m.etiqueta + '</div>' +
+      (m.ayuda ? '<div class="ayuda">' + m.ayuda + '</div>' : '') +
+      '<div class="campo"><input type="text" inputmode="numeric" placeholder="0" ' +
+        'aria-label="' + m.etiqueta + ' del día"><span class="uni">' + (m.uni || '') + '</span></div>' +
+      '<div class="ult"></div>' +
+    '</div>').join('');
+  $('listaMetas').querySelectorAll('.grupo').forEach(d => {
+    const inp = d.querySelector('input');
+    inp.addEventListener('input', guardarDraft);
+    inp.addEventListener('blur', () => {
+      const n = entNum(inp.value);
+      if (n !== '') inp.value = String(n);
+      d.classList.toggle('on', n !== '' && n > 0);
+    });
+  });
+
   // lo cargado los días anteriores, como referencia
   const previos = Object.keys(hechos).filter(f => f < hoy).sort().reverse();
   const ultimo = previos.length ? hechos[previos[0]] : null;
@@ -319,19 +358,26 @@ function abrirForm(){
     $('listaGrupos').querySelectorAll('.grupo').forEach((d, i) => {
       d.querySelector('.ult').innerHTML = 'Tu último compromiso (' + ddmm(previos[0]) + '): <b>' + fmtKg(ultimo[i] || 0) + ' kg</b>';
     });
+    $('listaMetas').querySelectorAll('.grupo').forEach((d, j) => {
+      const x = ultimo[OFS_METAS + j];
+      if (x === undefined || x === '') return;
+      d.querySelector('.ult').innerHTML = 'Tu último compromiso (' + ddmm(previos[0]) + '): <b>' + x + ' ' + (METAS[j].uni || '') + '</b>';
+    });
   }
 
   // ¿ya cargó hoy?
   const yaHoy = hechos[hoy];
   $('fYa').classList.toggle('on', !!yaHoy);
   if (yaHoy){
-    $('fYa').textContent = '✓ Ya cargaste el compromiso de hoy: ' + fmtKg((yaHoy[0] || 0) + (yaHoy[1] || 0)) +
-      ' kg. Si lo querés corregir, escribilo de nuevo y volvé a enviar.';
+    $('fYa').textContent = '✓ Ya cargaste el compromiso de hoy: ' + fmtKg((yaHoy[0] || 0) + (yaHoy[1] || 0)) + ' kg' +
+      (METAS.length && yaHoy.length > OFS_METAS ? ' · ' + resumenMetas(yaHoy) : '') +
+      '. Si lo querés corregir, escribilo de nuevo y volvé a enviar.';
   }
 
   // borrador (lo tipeado sobrevive a que el celular mate la pestaña) o lo ya cargado hoy
   const dr = leerLS(LS.draft, null);
-  const usar = (dr && dr.v === vendActual.c && dr.f === hoy) ? dr.g : (yaHoy ? yaHoy : null);
+  const esDraft = !!(dr && dr.v === vendActual.c && dr.f === hoy);
+  const usar = esDraft ? dr.g : (yaHoy ? yaHoy : null);
   if (usar){
     $('listaGrupos').querySelectorAll('.grupo').forEach((d, i) => {
       if (usar[i] === '' || usar[i] == null) return;
@@ -339,6 +385,13 @@ function abrirForm(){
       d.classList.toggle('on', Number(usar[i]) > 0);
     });
   }
+  const usarM = esDraft ? (dr.m || []) : (yaHoy ? yaHoy.slice(OFS_METAS) : []);
+  $('listaMetas').querySelectorAll('.grupo').forEach((d, j) => {
+    const x = usarM[j];
+    if (x === '' || x == null) return;
+    d.querySelector('input').value = String(x);
+    d.classList.toggle('on', Number(x) > 0);
+  });
   $('obs').value = (dr && dr.v === vendActual.c && dr.f === hoy) ? (dr.o || '') : '';
   $('obs').oninput = guardarDraft;
 
@@ -350,12 +403,19 @@ function abrirForm(){
 function valoresGrupos(){
   return [...$('listaGrupos').querySelectorAll('.grupo')].map(d => kgNum(d.querySelector('input').value));
 }
+function valoresMetas(){
+  return [...$('listaMetas').querySelectorAll('.grupo')].map(d => entNum(d.querySelector('input').value));
+}
+// "CCC 20 · FD 12 · TP 3" de una entrada de hechos
+function resumenMetas(h){
+  return METAS.map((m, j) => m.id.toUpperCase() + ' ' + (h[OFS_METAS + j] === undefined || h[OFS_METAS + j] === '' ? '—' : h[OFS_METAS + j])).join(' · ');
+}
 function pintarTotal(){
   const t = valoresGrupos().reduce((a, b) => a + (b === '' ? 0 : b), 0);
   $('fTotal').innerHTML = fmtKg(t) + ' <small>kg</small>';
 }
 function guardarDraft(){
-  grabarLS(LS.draft, { v: vendActual.c, f: hoyISO(), g: valoresGrupos(), o: $('obs').value });
+  grabarLS(LS.draft, { v: vendActual.c, f: hoyISO(), g: valoresGrupos(), m: valoresMetas(), o: $('obs').value });
 }
 function limpiarDraft(){ try{ localStorage.removeItem(LS.draft); }catch(e){} }
 
@@ -367,7 +427,8 @@ function renderHistorial(){
       const h = hechos[f];
       const tot = (h[0] || 0) + (h[1] || 0);
       return '<div class="fila"><span class="f">' + ddmm(f) + '</span>' +
-        '<span class="d">' + GRUPOS.map((g, i) => g.etiqueta + ' ' + fmtKg(h[i] || 0)).join(' · ') + '</span>' +
+        '<span class="d">' + GRUPOS.map((g, i) => g.etiqueta + ' ' + fmtKg(h[i] || 0)).join(' · ') +
+          (METAS.length && h.length > OFS_METAS ? '<br>' + resumenMetas(h) : '') + '</span>' +
         '<span class="k">' + fmtKg(tot) + ' kg</span></div>';
     }).join('');
 }
@@ -376,6 +437,7 @@ function renderHistorial(){
 function armarPayload(){
   const fecha = hoyISO();
   const vals = valoresGrupos();
+  const metas = valoresMetas();
   return {
     _id: nuevoId(),
     _k: vendActual.c + '|' + fecha,              // un compromiso por vendedora y día
@@ -397,9 +459,13 @@ function armarPayload(){
     campos: GRUPOS.map((g, i) => ({
       id: g.id, etiqueta: 'Kg ' + g.etiqueta, tipo: 'numero',
       valor: vals[i] === '' ? 0 : vals[i],
-    })),
+    })).concat(METAS.map((m, j) => ({
+      id: m.id, etiqueta: m.columna || m.etiqueta, tipo: 'numero',
+      valor: metas[j] === '' ? 0 : metas[j],
+    }))),
     _fechaComp: fecha,
     _vals: vals,
+    _metas: metas,
   };
 }
 
@@ -415,6 +481,18 @@ function validar(p){
       if (!confirm(GRUPOS[i].etiqueta + ': ' + fmtKg(vals[i]) + ' kg.\n¿Está bien ese número?')) return false;
     }
   }
+  const metas = p._metas || [];
+  const faltan = METAS.filter((m, j) => metas[j] === '');
+  if (faltan.length){
+    toast('Completá ' + faltan.map(m => m.etiqueta).join(', ') + ' (0 si no vas a traer ninguno).', 'err', 5000);
+    return false;
+  }
+  for (let j = 0; j < METAS.length; j++){
+    const max = METAS[j].max;
+    if (max && metas[j] > max){
+      if (!confirm(METAS[j].etiqueta + ': ' + metas[j] + ' ' + (METAS[j].uni || '') + '.\n¿Está bien ese número?')) return false;
+    }
+  }
   const tot = vals.reduce((a, b) => a + (b === '' ? 0 : b), 0);
   if (tot === 0 && !confirm('Estás cargando 0 kg para todo el día.\n¿Enviar igual?')) return false;
   if (hechos[p._fechaComp] && !confirm('Ya cargaste el compromiso de hoy.\n¿Lo querés corregir con este número?')) return false;
@@ -426,7 +504,7 @@ async function postear(p){
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT);
   try{
     const limpio = Object.assign({}, p);
-    delete limpio._vals; delete limpio._fechaComp;
+    delete limpio._vals; delete limpio._fechaComp; delete limpio._metas;
     const r = await fetch(EP, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },   // evita el preflight CORS
@@ -462,7 +540,10 @@ async function backendListo(){
 }
 
 function marcarHecho(p){
-  hechos[p._fechaComp] = [p.campos[0].valor, p.campos[1] ? p.campos[1].valor : 0, new Date().toISOString()];
+  // [gp, sb, enviado, ...metas]: los kilos son siempre los dos primeros campos y las metas los
+  // que siguen (un envío viejo que quedó en la cola sin metas guarda solo los kilos)
+  hechos[p._fechaComp] = [p.campos[0].valor, p.campos[1] ? p.campos[1].valor : 0, new Date().toISOString()]
+    .concat(p.campos.slice(GRUPOS.length).map(c => c.valor));
   grabarLS(LS.hechos, hechos);
 }
 function quitarDeCola(p){ queue = queue.filter(x => x._id !== p._id); grabarLS(LS.queue, queue); }
